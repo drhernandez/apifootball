@@ -4,7 +4,10 @@ import com.google.inject.Injector;
 
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Config {
+public class Injectors {
+
+    private Injectors() {
+    }
 
     /**
      * Injector name
@@ -14,7 +17,7 @@ public class Config {
     /**
      * Guice injector
      */
-    final static ConcurrentHashMap<String, Injector> injectors = new ConcurrentHashMap<>();
+    static final ConcurrentHashMap<String, Injector> injectors = new ConcurrentHashMap<>();
 
     /**
      * Injectors getter & setter

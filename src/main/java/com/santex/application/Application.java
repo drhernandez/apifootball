@@ -2,7 +2,8 @@ package com.santex.application;
 
 import com.netflix.config.ConfigurationManager;
 import com.netflix.config.DeploymentContext;
-import com.santex.configs.Config;
+import com.santex.configs.Injectors;
+import com.santex.routers.ErrorHandlerRouter;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
@@ -14,6 +15,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.UUID;
 
+import static com.santex.configs.Injectors.APP;
 import static spark.Spark.*;
 
 @Slf4j
@@ -88,7 +90,7 @@ public abstract class Application implements SparkApplication, RouteGroup {
     @Override
     public void destroy() {
         stop();
-        Config.clearInjectors();
+        Injectors.clearInjectors();
     }
 
     /**
@@ -115,10 +117,7 @@ public abstract class Application implements SparkApplication, RouteGroup {
         after((request, response) -> MDC.clear());
 
         path(basePath, this);
-
-        //TODO ver esto
-//        Config.safeGetInstance(APP, key);
-//        getInstance(ErrorHandlerRouter.class).register();
+        Injectors.getInjector(APP).getInstance(ErrorHandlerRouter.class).register();
     }
 
     /**
