@@ -1,11 +1,15 @@
 package com.santex.configs;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
 import com.netflix.config.ConfigurationManager;
+import com.santex.clients.LeaguesClient;
+import com.santex.clients.imp.LeaguesClientImp;
 import kong.unirest.Unirest;
 import kong.unirest.UnirestInstance;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.inject.Named;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
@@ -20,7 +24,13 @@ public class RestClientConfigs extends AbstractModule {
 
     private static final ConcurrentHashMap<String, UnirestInstance> restClients = new ConcurrentHashMap<>();
 
-    private UnirestInstance buildRestClient(String clientName) {
+    @Provides
+    @Named(LeaguesClientImp.CLIENT_NAME)
+    public UnirestInstance leaguesClient() {
+        return buildDefaultRestClient(LeaguesClientImp.CLIENT_NAME);
+    }
+
+    private UnirestInstance buildDefaultRestClient(String clientName) {
 
         UnirestInstance restClient = Unirest.spawnInstance();
         restClient.config()

@@ -5,11 +5,9 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.TypeLiteral;
 import com.santex.application.Application;
-import com.santex.configs.DataBaseConfigs;
-import com.santex.configs.Injectors;
-import com.santex.configs.RestClientConfigs;
-import com.santex.configs.RoutingConfigs;
+import com.santex.configs.*;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.SessionFactory;
 import spark.RouteGroup;
 
 import java.util.List;
@@ -23,9 +21,12 @@ public class Main extends Application {
         super();
         Injector injector = Guice.createInjector(
                 new DataBaseConfigs(),
-                new RoutingConfigs()
+                new RoutingConfigs(),
+                new RestClientConfigs(),
+                new InjectionConfigs()
         );
         Injectors.addInjector(APP, injector);
+        SessionFactory sessionFactory = Injectors.getInjector(APP).getInstance(SessionFactory.class);
     }
 
     public static void main(String[] args) {
