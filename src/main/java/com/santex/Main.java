@@ -43,6 +43,7 @@ public class Main extends Application {
 
     @Override
     public void destroy() {
+        logger.info("destroy");
         super.destroy();
         RestClientConfigs.shutDownClients();
     }

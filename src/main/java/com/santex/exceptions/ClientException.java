@@ -1,14 +1,14 @@
 package com.santex.exceptions;
 
-import lombok.NoArgsConstructor;
+import com.santex.enums.ErrorCodes;
+import org.eclipse.jetty.http.HttpStatus;
 
 import java.util.List;
 
-@NoArgsConstructor
 public class ClientException extends ApiException {
 
-    public ClientException(String error, String message) {
-        super(error, message);
+    public ClientException(String message) {
+        super(ErrorCodes.client_error.name(), message, HttpStatus.INTERNAL_SERVER_ERROR_500);
     }
 
     public ClientException(String error, String message, Integer status) {

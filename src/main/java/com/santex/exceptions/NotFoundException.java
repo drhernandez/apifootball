@@ -7,6 +7,10 @@ import java.util.List;
 
 public class NotFoundException extends ApiException {
 
+    public NotFoundException() {
+        super(ErrorCodes.not_found.name(), "Not found", HttpStatus.NOT_FOUND_404);
+    }
+
     public NotFoundException(String message) {
         super(ErrorCodes.not_found.name(), message, HttpStatus.NOT_FOUND_404);
     }

@@ -2,10 +2,7 @@ package com.santex.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.*;
 import com.santex.enums.ErrorCodes;
 import com.santex.exceptions.ApiException;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +22,8 @@ public class MapperUtils {
         defaultMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
         defaultMapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
         defaultMapper.configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING, true);
-        defaultMapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+        defaultMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        defaultMapper.setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CAMEL_CASE);
     }
 
     public static String toJsonString(Object object) {

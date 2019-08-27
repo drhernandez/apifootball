@@ -7,6 +7,10 @@ import java.util.List;
 
 public class InternalErrorException extends ApiException {
 
+    public InternalErrorException() {
+        super(ErrorCodes.internal_error.name(), "Internal error", HttpStatus.INTERNAL_SERVER_ERROR_500);
+    }
+
     public InternalErrorException(String message) {
         super(ErrorCodes.internal_error.name(), message, HttpStatus.INTERNAL_SERVER_ERROR_500);
     }

@@ -22,7 +22,7 @@ public class LeaguesRouter implements RouteGroup {
         logger.info("Loading leagues routes...");
         Spark.path("import-league", () -> {
 
-            Spark.get("/:id", controller::importLeagues);
+            Spark.get("/:id", controller::importLeague);
         });
     }
 }

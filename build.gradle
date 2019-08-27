@@ -56,6 +56,7 @@ dependencies {
     compile group: 'org.apache.commons', name: 'commons-lang3', version:'3.6'
     compile group: 'com.google.inject', name: 'guice', version:'4.2.0'
     compile group: 'com.konghq', name: 'unirest-java', version: '2.3.16'
+    compile group: 'com.konghq', name: 'unirest-objectmapper-jackson', version: '2.3.16'
 
     testCompile "junit:junit:4.12"
 //    testCompile "pl.pragmatists:JUnitParams:1.1.1"

@@ -78,7 +78,7 @@ public class DataBaseConfigs extends AbstractModule {
 
         MetadataSources metadataSources = new MetadataSources(standarServiceRegistry);
         //Register @Entity classes
-        List<Class<?>> entityClasses = EntityScanner.scanPackages("com.santex.models").result();
+        List<Class<?>> entityClasses = EntityScanner.scanPackages("com.santex.models.entities").result();
         for (Class<?> annotatedClass : entityClasses) {
             metadataSources.addAnnotatedClass(annotatedClass);
         }
