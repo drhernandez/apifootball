@@ -8,6 +8,7 @@ import com.santex.json.serializers.OffsetDateTimeSerializer;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.OffsetDateTime;
 
 @Builder
@@ -17,7 +18,7 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 @Entity
 @Table(name = "PLAYERS")
-public class Player {
+public class Player implements Serializable {
 
     @Id
     private Long id;

@@ -4,10 +4,7 @@ import com.google.inject.Inject;
 import com.santex.clients.FootballApiClient;
 import com.santex.configs.Constants;
 import com.santex.enums.ErrorCodes;
-import com.santex.exceptions.ClientException;
-import com.santex.exceptions.ExceptionUtils;
-import com.santex.exceptions.InternalErrorException;
-import com.santex.exceptions.NotFoundException;
+import com.santex.exceptions.*;
 import com.santex.models.entities.Team;
 import com.santex.models.http.CompAndTeamsResp;
 import com.santex.models.http.ErrorResponse;
@@ -16,6 +13,7 @@ import kong.unirest.HttpResponse;
 import kong.unirest.UnirestInstance;
 import kong.unirest.UnirestParsingException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.HttpStatus;
 
 import javax.inject.Named;
 
@@ -37,32 +35,32 @@ public class FootballApiClientImp implements FootballApiClient {
     }
 
     @Override
-    public CompAndTeamsResp getCompetitionTeams(String competitionId) {
+    public CompAndTeamsResp getCompetitionTeams(String competitionCode) {
 
         HttpResponse<String> response;
         try {
-            String url = BASE_URL + "/competitions/{id}/teams";
+            String url = BASE_URL + "/competitions/{code}/teams";
             response = instance.get(url)
                     .header("accept", "application/json")
                     .header(X_AUTH_TOKEN, token)
-                    .routeParam("id", competitionId)
+                    .routeParam("code", competitionCode)
                     .asString();
 
         } catch (Exception e) {
-            logger.error("[message: Unexpected error executing request] [request: GET /competitions/{}/teams] [error: {}]", competitionId, ExceptionUtils.getLogMessage(e));
-            throw new InternalErrorException();
+            logger.error("[message: Unexpected error executing request] [request: GET /competitions/{}/teams] [error: {}]", competitionCode, ExceptionUtils.getLogMessage(e));
+            throw new ServerErrorException(e);
         }
 
         if (response.getParsingError().isPresent()) {
             UnirestParsingException e = response.getParsingError().get();
             logger.error("[message: Error trying to unmarshal response] [error: {}] [body: {}]", e.getMessage(), e.getOriginalBody());
-            throw new ClientException("Unmarshal error");
+            throw new ApiException(ErrorCodes.internal_error.name(), "Unmarshal error", HttpStatus.SC_INTERNAL_SERVER_ERROR, e);
         }
 
         if (response.getStatus() != 200) {
-            logger.error("[message: Invalid status response] [request: GET /competitions/{}/teams] [status: {}] [error: {}]", competitionId, response.getStatus(), response.getBody());
+            logger.error("[message: Invalid status response] [request: GET /competitions/{}/teams] [status: {}] [error: {}]", competitionCode, response.getStatus(), response.getBody());
             ErrorResponse errorResponse = MapperUtils.toObject(response.getBody(), ErrorResponse.class);
-            throw response.getStatus() == 404 ? new NotFoundException() : new ClientException(ErrorCodes.internal_error.toString(), errorResponse.getMessage(), response.getStatus());
+            throw response.getStatus() == 404 ? new NotFoundException() : new ApiException(ErrorCodes.internal_error.toString(), errorResponse.getMessage(), response.getStatus());
         }
 
         return MapperUtils.toObject(response.getBody(), CompAndTeamsResp.class);
@@ -82,19 +80,19 @@ public class FootballApiClientImp implements FootballApiClient {
 
         } catch (Exception e) {
             logger.error("[message: Unexpected error executing request] [request: GET /teams/{id}] [error: {}]", teamId, ExceptionUtils.getLogMessage(e));
-            throw new InternalErrorException();
+            throw new ServerErrorException(e);
         }
 
         if (response.getParsingError().isPresent()) {
             UnirestParsingException e = response.getParsingError().get();
             logger.error("[message: Error trying to unmarshal response] [error: {}] [body: {}]", e.getMessage(), e.getOriginalBody());
-            throw new ClientException("Unmarshal error");
+            throw new ApiException(ErrorCodes.internal_error.name(), "Unmarshal error", HttpStatus.SC_INTERNAL_SERVER_ERROR, e);
         }
 
         if (response.getStatus() != 200) {
             logger.error("[message: Invalid status response] [request: GET /teams/{}] [status: {}] [error: {}]", teamId, response.getStatus(), response.getBody());
             ErrorResponse errorResponse = MapperUtils.toObject(response.getBody(), ErrorResponse.class);
-            throw response.getStatus() == 404 ? new NotFoundException() : new ClientException(ErrorCodes.internal_error.toString(), errorResponse.getMessage(), response.getStatus());
+            throw response.getStatus() == 404 ? new NotFoundException() : new ApiException(ErrorCodes.internal_error.toString(), errorResponse.getMessage(), response.getStatus());
         }
 
         return MapperUtils.toObject(response.getBody(), Team.class);

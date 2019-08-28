@@ -7,10 +7,10 @@ public interface FootballApiClient {
 
     /**
      * Get competition and team info by id
-     * @param competitionId (could be id or code)
+     * @param competitionCode
      * @return
      */
-    CompAndTeamsResp getCompetitionTeams(String competitionId);
+    CompAndTeamsResp getCompetitionTeams(String competitionCode);
 
     /**
      * Get full team info

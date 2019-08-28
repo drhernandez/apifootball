@@ -3,6 +3,7 @@ package com.santex.models.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Builder
@@ -11,8 +12,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "COMPETITIONS")
-public class Competition {
+@Table(name = "COMPETITIONS",
+        indexes = {@Index(name = "idx_competition_code", columnList = "code")})
+public class Competition implements Serializable {
 
     @Id
     private Long id;
