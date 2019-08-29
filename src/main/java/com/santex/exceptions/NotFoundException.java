@@ -1,25 +1,18 @@
 package com.santex.exceptions;
 
-import com.santex.enums.ErrorCodes;
-import org.eclipse.jetty.http.HttpStatus;
-
-import java.util.List;
+import org.apache.http.HttpStatus;
 
 public class NotFoundException extends ApiException {
 
     public NotFoundException() {
-        super(ErrorCodes.not_found.name(), "Not found", HttpStatus.NOT_FOUND_404);
+        super("Not found", HttpStatus.SC_NOT_FOUND);
     }
 
     public NotFoundException(String message) {
-        super(ErrorCodes.not_found.name(), message, HttpStatus.NOT_FOUND_404);
+        super(message, HttpStatus.SC_NOT_FOUND);
     }
 
     public NotFoundException(String message, Throwable cause) {
-        super(ErrorCodes.not_found.name(), message, HttpStatus.NOT_FOUND_404, cause);
-    }
-
-    public NotFoundException(String message, List<String> causes) {
-        super(ErrorCodes.not_found.name(), message, HttpStatus.NOT_FOUND_404, causes);
+        super(message, HttpStatus.SC_NOT_FOUND, cause);
     }
 }

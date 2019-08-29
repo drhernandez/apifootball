@@ -17,7 +17,7 @@ public class Injectors {
     /**
      * Guice injector
      */
-    static final ConcurrentHashMap<String, Injector> injectors = new ConcurrentHashMap<>();
+    private static final ConcurrentHashMap<String, Injector> injectors = new ConcurrentHashMap<>();
 
     /**
      * Injectors getter & setter

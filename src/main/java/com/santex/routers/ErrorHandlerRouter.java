@@ -1,7 +1,6 @@
 package com.santex.routers;
 
 import com.google.common.net.MediaType;
-import com.santex.enums.ErrorCodes;
 import com.santex.exceptions.ApiException;
 import com.santex.exceptions.ExceptionUtils;
 import com.santex.exceptions.InternalErrorException;
@@ -12,8 +11,6 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 import spark.Spark;
-
-import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
 public class ErrorHandlerRouter {

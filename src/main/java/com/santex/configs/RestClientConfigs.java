@@ -56,7 +56,6 @@ public class RestClientConfigs extends AbstractModule {
                                 ConfigurationManager.getConfigInstance().getBoolean(REST_CLIENT_KEY + "default" + AUTOMATIC_RETRIES, true)
                         )
                 );
-//                .setObjectMapper(new JacksonObjectMapper());
 
         logger.debug(String.format("RestClient[name:%s, socketTimeout:%d, connectionTimeout:%d, maxConnections:%d, maxConnectionsPerRoute:%d, automaticRetries:%s]",
                 clientName,

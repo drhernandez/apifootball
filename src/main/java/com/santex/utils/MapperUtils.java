@@ -2,8 +2,10 @@ package com.santex.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.*;
-import com.santex.enums.ErrorCodes;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.santex.exceptions.ApiException;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.http.HttpStatus;
@@ -36,7 +38,7 @@ public class MapperUtils {
         } catch (JsonProcessingException e) {
             logger.error(String.format("[message: Invalid json string. Cannot convert object to string] [method: toJsonNode] [class: MapperUtils] [called from: %s] [object: %s]",
                     Thread.currentThread().getStackTrace()[2].toString(), object.toString()));
-            throw new ApiException(ErrorCodes.internal_error.toString(), "internal_error", HttpStatus.INTERNAL_SERVER_ERROR_500, e);
+            throw new ApiException("internal_error", HttpStatus.INTERNAL_SERVER_ERROR_500, e);
         }
     }
 
@@ -50,7 +52,7 @@ public class MapperUtils {
         } catch (IOException e) {
             logger.error(String.format("[message: Invalid json string. Cannot convert jsonString to object class] [method: toObject] [class: MapperUtils] [called from: %s] [object: %s]",
                     Thread.currentThread().getStackTrace()[2].toString(), json));
-            throw new ApiException(ErrorCodes.internal_error.toString(), "Error parse to object class", HttpStatus.INTERNAL_SERVER_ERROR_500, e);
+            throw new ApiException("Error parse to object class", HttpStatus.INTERNAL_SERVER_ERROR_500, e);
         }
     }
 
@@ -64,7 +66,7 @@ public class MapperUtils {
         } catch (IOException e) {
             logger.error(String.format("[message: Invalid json string. Cannot convert string to list] [method: toList] [class: MapperUtils] [called from: %s] [object: %s]",
                     Thread.currentThread().getStackTrace()[2].toString(), json));
-            throw new ApiException(ErrorCodes.internal_error.toString(), "Error parse to list", HttpStatus.INTERNAL_SERVER_ERROR_500, e);
+            throw new ApiException("Error parse to list", HttpStatus.INTERNAL_SERVER_ERROR_500, e);
         }
     }
 }

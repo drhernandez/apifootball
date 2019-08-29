@@ -3,8 +3,10 @@ package com.santex.clients.imp;
 import com.google.inject.Inject;
 import com.santex.clients.FootballApiClient;
 import com.santex.configs.Constants;
-import com.santex.enums.ErrorCodes;
-import com.santex.exceptions.*;
+import com.santex.exceptions.ApiException;
+import com.santex.exceptions.ExceptionUtils;
+import com.santex.exceptions.NotFoundException;
+import com.santex.exceptions.ServerErrorException;
 import com.santex.models.entities.Team;
 import com.santex.models.http.CompAndTeamsResp;
 import com.santex.models.http.ErrorResponse;
@@ -54,13 +56,13 @@ public class FootballApiClientImp implements FootballApiClient {
         if (response.getParsingError().isPresent()) {
             UnirestParsingException e = response.getParsingError().get();
             logger.error("[message: Error trying to unmarshal response] [error: {}] [body: {}]", e.getMessage(), e.getOriginalBody());
-            throw new ApiException(ErrorCodes.internal_error.name(), "Unmarshal error", HttpStatus.SC_INTERNAL_SERVER_ERROR, e);
+            throw new ApiException("Unmarshal error", HttpStatus.SC_INTERNAL_SERVER_ERROR, e);
         }
 
         if (response.getStatus() != 200) {
             logger.error("[message: Invalid status response] [request: GET /competitions/{}/teams] [status: {}] [error: {}]", competitionCode, response.getStatus(), response.getBody());
             ErrorResponse errorResponse = MapperUtils.toObject(response.getBody(), ErrorResponse.class);
-            throw response.getStatus() == 404 ? new NotFoundException() : new ApiException(ErrorCodes.internal_error.toString(), errorResponse.getMessage(), response.getStatus());
+            throw response.getStatus() == 404 ? new NotFoundException() : new ApiException(errorResponse.getMessage(), response.getStatus());
         }
 
         return MapperUtils.toObject(response.getBody(), CompAndTeamsResp.class);
@@ -86,13 +88,13 @@ public class FootballApiClientImp implements FootballApiClient {
         if (response.getParsingError().isPresent()) {
             UnirestParsingException e = response.getParsingError().get();
             logger.error("[message: Error trying to unmarshal response] [error: {}] [body: {}]", e.getMessage(), e.getOriginalBody());
-            throw new ApiException(ErrorCodes.internal_error.name(), "Unmarshal error", HttpStatus.SC_INTERNAL_SERVER_ERROR, e);
+            throw new ApiException("Unmarshal error", HttpStatus.SC_INTERNAL_SERVER_ERROR, e);
         }
 
         if (response.getStatus() != 200) {
             logger.error("[message: Invalid status response] [request: GET /teams/{}] [status: {}] [error: {}]", teamId, response.getStatus(), response.getBody());
             ErrorResponse errorResponse = MapperUtils.toObject(response.getBody(), ErrorResponse.class);
-            throw response.getStatus() == 404 ? new NotFoundException() : new ApiException(ErrorCodes.internal_error.toString(), errorResponse.getMessage(), response.getStatus());
+            throw response.getStatus() == 404 ? new NotFoundException() : new ApiException(errorResponse.getMessage(), response.getStatus());
         }
 
         return MapperUtils.toObject(response.getBody(), Team.class);

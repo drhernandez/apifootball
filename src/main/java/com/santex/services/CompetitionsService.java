@@ -18,9 +18,11 @@ public interface CompetitionsService {
     void saveOrUpdate(Competition competition);
 
     /**
-     * This service imports a league with their teams and players and store ir on the DB.
+     * This service imports a league with their teams and players and store it on the DB.
+     * Due to the rate limit of the API, a competition could ends up with its teams partially imported.
+     * You may have to import the competition many times in order to fully import all its teams.
      * @param competitionCode
-     * @return true if league is imported properly
+     * @return the competition
      */
-    boolean importLeague(String competitionCode);
+    Competition importLeague(String competitionCode);
 }

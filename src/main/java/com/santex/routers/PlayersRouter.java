@@ -1,18 +1,18 @@
 package com.santex.routers;
 
 import com.google.inject.Inject;
-import com.santex.controllers.LeaguesController;
+import com.santex.controllers.PlayersController;
 import lombok.extern.slf4j.Slf4j;
 import spark.RouteGroup;
 import spark.Spark;
 
 @Slf4j
-public class LeaguesRouter implements RouteGroup {
+public class PlayersRouter implements RouteGroup {
 
-    LeaguesController controller;
+    PlayersController controller;
 
     @Inject
-    public LeaguesRouter(LeaguesController controller) {
+    public PlayersRouter(PlayersController controller) {
         this.controller = controller;
     }
 
@@ -20,9 +20,9 @@ public class LeaguesRouter implements RouteGroup {
     public void addRoutes() {
 
         logger.info("Loading leagues routes...");
-        Spark.path("import-league", () -> {
+        Spark.path("total-players", () -> {
 
-            Spark.get("/:id", controller::importLeague);
+            Spark.get("/:code", controller::countPlayers);
         });
     }
 }

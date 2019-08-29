@@ -22,6 +22,9 @@ public class Competition implements Serializable {
     private String name;
     private Area area;
 
+    @Column(name = "fully_imported")
+    private boolean fullyImported;
+
     @ManyToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
     @JoinTable(name = "COMPETITIONS_TEAMS",
             joinColumns = { @JoinColumn(name = "competition_id") },

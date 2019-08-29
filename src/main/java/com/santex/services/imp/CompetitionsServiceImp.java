@@ -4,9 +4,10 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.santex.clients.FootballApiClient;
 import com.santex.daos.CompetitionsDao;
-import com.santex.daos.TeamsDao;
-import com.santex.enums.ErrorCodes;
-import com.santex.exceptions.*;
+import com.santex.exceptions.ApiException;
+import com.santex.exceptions.ExceptionUtils;
+import com.santex.exceptions.InternalErrorException;
+import com.santex.exceptions.ServerErrorException;
 import com.santex.models.entities.Competition;
 import com.santex.models.entities.Team;
 import com.santex.models.http.CompAndTeamsResp;
@@ -19,12 +20,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import javax.persistence.NoResultException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -80,13 +76,13 @@ public class CompetitionsServiceImp implements CompetitionsService {
     }
 
     @Override
-    public boolean importLeague(String competitionCode) {
+    public Competition importLeague(String competitionCode) {
 
         //Search on DB
         Competition competition = findByCode(competitionCode);
-        if (competition != null) {
+        if (competition != null && competition.isFullyImported()) {
             logger.error("[message: Competition {} already imported]", competitionCode);
-            throw new ApiException(ErrorCodes.internal_error.name(), "League already imported", HttpStatus.SC_CONFLICT);
+            throw new ApiException("League already imported", HttpStatus.SC_CONFLICT);
         }
 
         //Search on API
@@ -97,41 +93,18 @@ public class CompetitionsServiceImp implements CompetitionsService {
 
         //Get missing teams from API
         teamIds.removeAll(teams.stream().map(team ->team.getId()).collect(Collectors.toList()));
-        List<Team> missingTeams = bulkGetTeams(teamIds);
-        teams.addAll(missingTeams);
+        List<Team> missingTeams = teamsService.getTeamsFromApi(teamIds);
 
+        //Set the relation between team and player
+        missingTeams.forEach(team -> team.getPlayers().forEach(player -> player.setTeam(team)));
+        teams.addAll(missingTeams);
         competition.setTeams(teams);
+
+        //Check if is fully imported due to API rate limmit
+        competition.setFullyImported(response.getTeams().size() == teams.size());
+
         saveOrUpdate(competition);
 
-        return true;
-    }
-
-    private List<Team> bulkGetTeams(List<Long> teamIds) {
-
-        List<CompletableFuture<Team>> futures = new ArrayList<>();
-        teamIds.forEach(teamId -> futures.add(
-                CompletableFuture.supplyAsync(() -> footballApiClient.getTeam(teamId))
-        ));
-
-        CompletableFuture allFutures = CompletableFuture.allOf(futures.toArray(new CompletableFuture[futures.size()]));
-        try {
-            allFutures.get(15, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            logger.error("[message: Thread interrupted] [error: {}]", ExceptionUtils.getLogMessage(e));
-            throw new InternalErrorException(e);
-        } catch (ExecutionException e) {
-            logger.error("[message: Promise execution error] [error: {}]", ExceptionUtils.getLogMessage(e));
-            throw new InternalErrorException(e);
-        } catch (TimeoutException e) {
-            logger.error("[message: Promise execution timeout]");
-            throw new InternalErrorException(e);
-        }
-
-        //Get all responses
-        List<Team> responses = futures.stream().map(CompletableFuture::join).collect(Collectors.toList());
-
-        //TODO Check if something went wrong
-        return responses;
+        return competition;
     }
 }
