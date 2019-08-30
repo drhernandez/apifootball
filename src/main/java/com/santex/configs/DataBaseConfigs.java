@@ -7,6 +7,7 @@ import com.google.inject.Singleton;
 import com.netflix.config.ConfigurationManager;
 import com.santex.application.Application;
 import com.santex.exceptions.DataBaseException;
+import com.santex.exceptions.ServerErrorException;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
@@ -41,8 +42,8 @@ public class DataBaseConfigs extends AbstractModule {
             sessionFactory = createSessionFactory(url, user, pass, showSQL, hbm2ddl);
 
         } catch (Exception e) {
-            logger.error("Error trying to create SessionFactory", e);
-            throw new DataBaseException("SessionFactory creation exception", e);
+            logger.error("Error connecting to the DB", e);
+            throw new ServerErrorException(e);
         }
 
         return sessionFactory;

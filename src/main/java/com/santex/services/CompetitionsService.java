@@ -7,9 +7,10 @@ public interface CompetitionsService {
     /**
      * Search competition on DB
      * @param competitionCode
+     * @param initializeTeams initialize teams if needed
      * @return
      */
-    Competition findByCode(String competitionCode);
+    Competition findByCode(String competitionCode, boolean initializeTeams);
 
     /**
      * Save or update the given competition on the DB

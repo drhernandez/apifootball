@@ -7,6 +7,8 @@ import com.santex.models.entities.Player;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
+import java.util.List;
+
 public class PlayersDaoImp
         extends AbstractGenericDao<Player>
         implements PlayersDao {
@@ -14,6 +16,15 @@ public class PlayersDaoImp
     @Inject
     public PlayersDaoImp(SessionFactory sessionFactory) {
         super(sessionFactory);
+    }
+
+    @Override
+    public List<Player> findByIds(List<Long> ids) {
+
+        String hql = "from Player WHERE id IN (:ids)";
+        Query query = getSession().createQuery(hql);
+        query.setParameter("ids", ids);
+        return query.list();
     }
 
     @Override

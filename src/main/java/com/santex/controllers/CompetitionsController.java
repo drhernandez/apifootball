@@ -1,6 +1,7 @@
 package com.santex.controllers;
 
 import com.google.inject.Inject;
+import com.santex.exceptions.BadRequestException;
 import com.santex.models.entities.Competition;
 import com.santex.services.CompetitionsService;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +22,11 @@ public class CompetitionsController {
     public Object importLeague(Request request, Response response) {
 
         String competitionCode = request.params("code");
-        Competition competition = competitionsService.importLeague(competitionCode);
+        if (competitionCode == null) {
+            throw new BadRequestException("Invalid params");
+        }
 
+        Competition competition = competitionsService.importLeague(competitionCode);
 
         response.header("Content-type", "application/json");
         if (competition.isFullyImported()) {

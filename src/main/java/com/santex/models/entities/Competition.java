@@ -1,12 +1,19 @@
 package com.santex.models.entities;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
-@Builder
+import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,18 +23,51 @@ import java.util.List;
         indexes = {@Index(name = "idx_competition_code", columnList = "code")})
 public class Competition implements Serializable {
 
+
     @Id
     private Long id;
+
+    @NaturalId
     private String code;
+
     private String name;
+
     private Area area;
 
     @Column(name = "fully_imported")
     private boolean fullyImported;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+    @Cascade(SAVE_UPDATE)
+    @ManyToMany
     @JoinTable(name = "COMPETITIONS_TEAMS",
             joinColumns = { @JoinColumn(name = "competition_id") },
             inverseJoinColumns = { @JoinColumn(name = "team_id") })
-    private List<Team> teams;
+    private Set<Team> teams;
+
+
+    public Set<Team> getTeams() {
+        if (teams == null) {
+            teams = new HashSet<>();
+        }
+        return teams;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Competition that = (Competition) o;
+
+        if (!id.equals(that.id)) return false;
+        return code.equals(that.code);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + code.hashCode();
+        return result;
+    }
 }
