@@ -24,7 +24,7 @@ public abstract class Application implements SparkApplication, RouteGroup {
     /**
      * Overloadable Configurations
      */
-    public static final String ENVIRONMENT = "env";
+    public static final String ENVIRONMENT = "ENVIRONMENT";
     public static final String DEVELOP = "dev";
     public static final String PRODUCTION = "prod";
 
