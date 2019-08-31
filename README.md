@@ -48,10 +48,10 @@ This application allows you to import football content from www.football-data.or
 Hibernate will automatically create all tables. In case you want to do it your self
  you can use this [sql script](https://github.com/drhernandez/apifootball/tree/master/src/main/resources/db/creation.sql)
 
-##Build
+## Build
 
 * execute ./gradlew build
 
-##Test
+## Test
 
 * execute ./gradlew test
