@@ -34,9 +34,16 @@ This application allows you to import football content from www.football-data.or
 * DB_SANTEX_PASSWORD: your database user password
 * FO_TOKEN: your token generated on www.football-data.org
 
+* example: 
+ENVIRONMENT=dev
+DB_SANTEX_ENDPOINT=localhost:3306
+DB_SANTEX_PASSWORD=rootroot
+FO_TOKEN=YOUR_TOKEN_HERE
+
 **Create Database Schema**
 
-* Create a schema on your mysql called "santex"
+* Create a schema on your mysql called "santex". 
+* You can configure the user on database.properties files.
 
 Hibernate will automatically create all tables. In case you want to do it your self
  you can use this [sql script](https://github.com/drhernandez/apifootball/tree/master/src/main/resources/db/creation.sql)
