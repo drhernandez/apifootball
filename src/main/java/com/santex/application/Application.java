@@ -24,7 +24,7 @@ public abstract class Application implements SparkApplication, RouteGroup {
     /**
      * Overloadable Configurations
      */
-    public static final String ENVIRONMENT = "env";
+    public static final String ENVIRONMENT = "ENVIRONMENT";
     public static final String DEVELOP = "dev";
     public static final String PRODUCTION = "prod";
 
@@ -56,18 +56,15 @@ public abstract class Application implements SparkApplication, RouteGroup {
      * Environment variable
      */
     @Getter
-    private static String environment;
+    private static String environment = getenv(ENVIRONMENT, DEVELOP);
 
     /**
      * Create an application with default configuration.
      */
     public Application() {
         try {
-            environment = getenv(ENVIRONMENT, DEVELOP);
             setUpConfigurationManagement();
             initializeWithDefaults();
-//            dependencyInjectionConfiguration();
-
         } catch (UnknownHostException e) {
             throw new RuntimeException(e);
         }
@@ -96,7 +93,7 @@ public abstract class Application implements SparkApplication, RouteGroup {
     /**
      * Configure the embedded jetty server to start.
      */
-    protected void configureServer() {
+    private void configureServer() {
         final int processors = Runtime.getRuntime().availableProcessors();
         final int maxThreads = processors * maxMultiplier + baseThreads;
         final int minThreads = processors * minMultiplier + baseThreads;
@@ -126,7 +123,7 @@ public abstract class Application implements SparkApplication, RouteGroup {
      * @environment="dev" or "prod"
      * @stack="scope"
      */
-    protected void setUpConfigurationManagement() {
+    private void setUpConfigurationManagement() {
         try {
             DeploymentContext context = ConfigurationManager.getDeploymentContext();
             context.setDeploymentEnvironment(isProduction() ? PRODUCTION : DEVELOP);
@@ -142,7 +139,7 @@ public abstract class Application implements SparkApplication, RouteGroup {
      *
      * @throws UnknownHostException
      */
-    protected void initializeWithDefaults() throws UnknownHostException {
+    private void initializeWithDefaults() throws UnknownHostException {
 
         port = ConfigurationManager.getConfigInstance().getInt(SERVER_PORT, 8080);
         final String ipAddress = InetAddress.getLocalHost().getHostAddress();

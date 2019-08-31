@@ -5,10 +5,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.TypeLiteral;
 import com.santex.application.Application;
-import com.santex.configs.DataBaseConfigs;
-import com.santex.configs.Injectors;
-import com.santex.configs.RestClientConfigs;
-import com.santex.configs.RoutingConfigs;
+import com.santex.configs.*;
 import lombok.extern.slf4j.Slf4j;
 import spark.RouteGroup;
 
@@ -23,7 +20,9 @@ public class Main extends Application {
         super();
         Injector injector = Guice.createInjector(
                 new DataBaseConfigs(),
-                new RoutingConfigs()
+                new RoutingConfigs(),
+                new RestClientConfigs(),
+                new InjectionConfigs()
         );
         Injectors.addInjector(APP, injector);
     }
@@ -42,6 +41,7 @@ public class Main extends Application {
 
     @Override
     public void destroy() {
+        logger.info("destroy");
         super.destroy();
         RestClientConfigs.shutDownClients();
     }

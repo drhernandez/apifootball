@@ -1,9 +1,9 @@
 package com.santex.routers;
 
 import com.google.common.net.MediaType;
-import com.santex.enums.ErrorCodes;
 import com.santex.exceptions.ApiException;
 import com.santex.exceptions.ExceptionUtils;
+import com.santex.exceptions.InternalErrorException;
 import com.santex.exceptions.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.http.HttpStatus;
@@ -11,8 +11,6 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 import spark.Spark;
-
-import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
 public class ErrorHandlerRouter {
@@ -41,7 +39,7 @@ public class ErrorHandlerRouter {
     protected void exceptionHandler(Exception exception, Request request, Response response) {
         Throwable t = ExceptionUtils.getFromChain(exception, ApiException.class);
         logger.error(ExceptionUtils.getLogMessage(t));
-        ApiException apiException = t instanceof ApiException ? (ApiException) t : new ApiException(ErrorCodes.internal_error.toString(), "Internal server error", HttpServletResponse.SC_INTERNAL_SERVER_ERROR, t);
+        ApiException apiException = t instanceof ApiException ? (ApiException) t : new InternalErrorException();
 
         response.status(apiException.getStatus());
         response.body(apiException.toJson());

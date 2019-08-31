@@ -2,7 +2,8 @@ package com.santex.configs;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.Multibinder;
-import com.santex.routers.LeaguesRouter;
+import com.santex.routers.CompetitionsRouter;
+import com.santex.routers.PlayersRouter;
 import spark.RouteGroup;
 
 public class RoutingConfigs extends AbstractModule {
@@ -11,6 +12,7 @@ public class RoutingConfigs extends AbstractModule {
     protected void configure() {
 
         Multibinder<RouteGroup> routeGroupMultibinder = Multibinder.newSetBinder(binder(), RouteGroup.class);
-        routeGroupMultibinder.addBinding().to(LeaguesRouter.class);
+        routeGroupMultibinder.addBinding().to(CompetitionsRouter.class);
+        routeGroupMultibinder.addBinding().to(PlayersRouter.class);
     }
 }

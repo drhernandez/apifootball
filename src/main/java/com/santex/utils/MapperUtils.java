@@ -1,19 +1,16 @@
 package com.santex.utils;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.santex.enums.ErrorCodes;
 import com.santex.exceptions.ApiException;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.jetty.http.HttpStatus;
 
 import javax.annotation.Nonnull;
 import java.io.IOException;
-import java.util.List;
 
 @Slf4j
 public class MapperUtils {
@@ -25,7 +22,8 @@ public class MapperUtils {
         defaultMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
         defaultMapper.configure(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL, true);
         defaultMapper.configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING, true);
-        defaultMapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+        defaultMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        defaultMapper.setPropertyNamingStrategy(PropertyNamingStrategy.LOWER_CAMEL_CASE);
     }
 
     public static String toJsonString(Object object) {
@@ -38,7 +36,7 @@ public class MapperUtils {
         } catch (JsonProcessingException e) {
             logger.error(String.format("[message: Invalid json string. Cannot convert object to string] [method: toJsonNode] [class: MapperUtils] [called from: %s] [object: %s]",
                     Thread.currentThread().getStackTrace()[2].toString(), object.toString()));
-            throw new ApiException(ErrorCodes.internal_error.toString(), "internal_error", HttpStatus.INTERNAL_SERVER_ERROR_500, e);
+            throw new ApiException("internal_error", HttpStatus.INTERNAL_SERVER_ERROR_500, e);
         }
     }
 
@@ -52,21 +50,7 @@ public class MapperUtils {
         } catch (IOException e) {
             logger.error(String.format("[message: Invalid json string. Cannot convert jsonString to object class] [method: toObject] [class: MapperUtils] [called from: %s] [object: %s]",
                     Thread.currentThread().getStackTrace()[2].toString(), json));
-            throw new ApiException(ErrorCodes.internal_error.toString(), "Error parse to object class", HttpStatus.INTERNAL_SERVER_ERROR_500, e);
-        }
-    }
-
-    public static <T> List<T> toObjectList(String json, Class<T> clazz) {
-        return toObjectList(defaultMapper, json, clazz);
-    }
-
-    public static <T> List<T> toObjectList(@Nonnull ObjectMapper customMapper, String json, Class<T> clazz) {
-        try {
-            return customMapper.readValue(json, new TypeReference<List<T>>(){});
-        } catch (IOException e) {
-            logger.error(String.format("[message: Invalid json string. Cannot convert string to list] [method: toList] [class: MapperUtils] [called from: %s] [object: %s]",
-                    Thread.currentThread().getStackTrace()[2].toString(), json));
-            throw new ApiException(ErrorCodes.internal_error.toString(), "Error parse to list", HttpStatus.INTERNAL_SERVER_ERROR_500, e);
+            throw new ApiException("Error parse to object class", HttpStatus.INTERNAL_SERVER_ERROR_500, e);
         }
     }
 }

@@ -1,21 +1,14 @@
 package com.santex.exceptions;
 
-import com.santex.enums.ErrorCodes;
-import org.eclipse.jetty.http.HttpStatus;
-
-import java.util.List;
+import org.apache.http.HttpStatus;
 
 public class BadRequestException extends ApiException {
 
     public BadRequestException(String message) {
-        super(ErrorCodes.bad_request.name(), message, HttpStatus.BAD_REQUEST_400);
+        super(message, HttpStatus.SC_BAD_REQUEST);
     }
 
     public BadRequestException(String message, Throwable cause) {
-        super(ErrorCodes.bad_request.name(), message, HttpStatus.BAD_REQUEST_400, cause);
-    }
-
-    public BadRequestException(String message, List<String> causes) {
-        super(ErrorCodes.bad_request.name(), message, HttpStatus.BAD_REQUEST_400, causes);
+        super(message, HttpStatus.SC_BAD_REQUEST, cause);
     }
 }

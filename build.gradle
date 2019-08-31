@@ -11,13 +11,11 @@ buildscript {
 plugins {
     id 'java'
     id 'war'
-//    id 'jacoco'
     id 'application'
     id 'idea'
     id 'com.github.ben-manes.versions' version '0.15.0'
     id 'us.kirchmeier.capsule' version '1.0.2'
     id 'io.franzbecker.gradle-lombok' version '1.10'
-    id "org.sonarqube" version "2.7"
 }
 
 apply plugin: "com.github.johnrengelman.shadow"
@@ -48,6 +46,7 @@ dependencies {
     compile group: 'org.hibernate', name: 'hibernate-java8', version: '5.4.2.Final'
     compile group: 'com.github.v-ladynev', name: 'fluent-hibernate-core', version:'0.3.1'
     compile group: 'org.apache.commons', name: 'commons-configuration2', version:'2.2'
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
     compile group: 'log4j', name: 'log4j', version:'1.2.17'
     compile(group: 'org.slf4j', name: 'slf4j-log4j12', version:'1.7.25') {
         exclude(module: 'log4j')
@@ -56,18 +55,16 @@ dependencies {
     compile group: 'org.apache.commons', name: 'commons-lang3', version:'3.6'
     compile group: 'com.google.inject', name: 'guice', version:'4.2.0'
     compile group: 'com.konghq', name: 'unirest-java', version: '2.3.16'
+    compile group: 'com.konghq', name: 'unirest-objectmapper-jackson', version: '2.3.16'
 
     testCompile "junit:junit:4.12"
-//    testCompile "pl.pragmatists:JUnitParams:1.1.1"
     testCompile group: 'com.h2database', name: 'h2', version: '1.4.199'
     testCompile group: 'org.powermock', name: 'powermock-api-mockito2', version:'2.0.0'
     testCompile group: 'org.powermock', name: 'powermock-module-junit4', version:'2.0.0'
     testCompile group: 'org.mockito', name: 'mockito-core', version:'2.19.0'
     testCompile group: 'org.projectlombok', name: 'lombok', version: '1.18.2'
-//    testCompile(group: 'io.rest-assured', name: 'rest-assured', version:'3.0.5') {
-//        exclude(module: 'httpclient')
-//        exclude(module: 'httpmime')
-//    }
+    testCompile group: 'io.rest-assured', name: 'rest-assured', version:'4.0.0'
+    compile "org.mock-server:mockserver-netty:5.6.1"
 }
 
 shadowJar {

@@ -1,11 +1,15 @@
 package com.santex.configs;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
 import com.netflix.config.ConfigurationManager;
+import com.santex.clients.imp.FootballApiClientImp;
 import kong.unirest.Unirest;
 import kong.unirest.UnirestInstance;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.inject.Named;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
@@ -20,7 +24,14 @@ public class RestClientConfigs extends AbstractModule {
 
     private static final ConcurrentHashMap<String, UnirestInstance> restClients = new ConcurrentHashMap<>();
 
-    private UnirestInstance buildRestClient(String clientName) {
+    @Provides
+    @Singleton
+    @Named(FootballApiClientImp.CLIENT_NAME)
+    public UnirestInstance leaguesClient() {
+        return buildDefaultRestClient(FootballApiClientImp.CLIENT_NAME);
+    }
+
+    private UnirestInstance buildDefaultRestClient(String clientName) {
 
         UnirestInstance restClient = Unirest.spawnInstance();
         restClient.config()
@@ -48,8 +59,6 @@ public class RestClientConfigs extends AbstractModule {
                         )
                 );
 
-        restClients.put(clientName, restClient);
-
         logger.debug(String.format("RestClient[name:%s, socketTimeout:%d, connectionTimeout:%d, maxConnections:%d, maxConnectionsPerRoute:%d, automaticRetries:%s]",
                 clientName,
                 restClient.config().getSocketTimeout(),
@@ -58,6 +67,8 @@ public class RestClientConfigs extends AbstractModule {
                 restClient.config().getMaxPerRoutes(),
                 restClient.config().isAutomaticRetries())
         );
+
+        restClients.put(clientName, restClient);
 
         return restClient;
     }
