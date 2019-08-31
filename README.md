@@ -34,11 +34,11 @@ This application allows you to import football content from www.football-data.or
 * DB_SANTEX_PASSWORD: your database user password
 * FO_TOKEN: your token generated on www.football-data.org
 
-* example: 
-ENVIRONMENT=dev
-DB_SANTEX_ENDPOINT=localhost:3306
-DB_SANTEX_PASSWORD=rootroot
-FO_TOKEN=YOUR_TOKEN_HERE
+**Example:** 
+* ENVIRONMENT=dev
+* DB_SANTEX_ENDPOINT=localhost:3306
+* DB_SANTEX_PASSWORD=rootroot
+* FO_TOKEN=YOUR_TOKEN_HERE
 
 **Create Database Schema**
 
