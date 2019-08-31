@@ -1,4 +1,6 @@
-create table COMPETITIONS
+create DATABASE IF NOT EXISTS santex;
+
+create table IF NOT EXISTS santex.COMPETITIONS
 (
     id             bigint       not null
         primary key,
@@ -11,9 +13,9 @@ create table COMPETITIONS
 );
 
 create index idx_competition_code
-    on COMPETITIONS (code);
+    on santex.COMPETITIONS (code);
 
-create table PLAYERS
+create table IF NOT EXISTS santex.PLAYERS
 (
     id               bigint       not null
         primary key,
@@ -24,7 +26,7 @@ create table PLAYERS
     position         varchar(255) null
 );
 
-create table TEAMS
+create table IF NOT EXISTS santex.TEAMS
 (
     id         bigint       not null
         primary key,
@@ -34,7 +36,7 @@ create table TEAMS
     tla        varchar(255) null
 );
 
-create table COMPETITIONS_TEAMS
+create table IF NOT EXISTS santex.COMPETITIONS_TEAMS
 (
     competition_id bigint not null,
     team_id        bigint not null,
@@ -45,7 +47,7 @@ create table COMPETITIONS_TEAMS
         foreign key (competition_id) references COMPETITIONS (id)
 );
 
-create table TEAMS_PLAYERS
+create table IF NOT EXISTS santex.TEAMS_PLAYERS
 (
     team_id   bigint not null,
     player_id bigint not null,
@@ -55,4 +57,3 @@ create table TEAMS_PLAYERS
     constraint FKoivhok0lm5f33759oo3elmlk6
         foreign key (player_id) references PLAYERS (id)
 );
-
