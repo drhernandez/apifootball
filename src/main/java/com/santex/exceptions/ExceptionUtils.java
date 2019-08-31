@@ -17,7 +17,7 @@ public class ExceptionUtils {
 
     public static String getLogMessage(Throwable t) {
         String className = getCleanName(t.getClass().getName());
-        StackTraceElement wellKnownClass = Arrays.stream(t.getStackTrace()).filter(element -> element.getClassName().contains("com.mercadolibre")).findFirst().orElse(null);
+        StackTraceElement wellKnownClass = Arrays.stream(t.getStackTrace()).filter(element -> element.getClassName().contains("com.santex")).findFirst().orElse(null);
         StackTraceElement element = wellKnownClass != null ? wellKnownClass : t.getStackTrace()[0];
         StringBuilder errorMessage = new StringBuilder();
         errorMessage.append(String.format("%s: %s at %s.%s(%s:%d)",

@@ -7,6 +7,7 @@ import com.santex.models.entities.Player;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlayersDaoImp
@@ -24,7 +25,8 @@ public class PlayersDaoImp
         String hql = "from Player WHERE id IN (:ids)";
         Query query = getSession().createQuery(hql);
         query.setParameter("ids", ids);
-        return query.list();
+        List<Player> players = query.list();
+        return players != null ? players : new ArrayList<>();
     }
 
     @Override

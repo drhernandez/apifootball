@@ -1,6 +1,7 @@
 package com.santex.clients.imp;
 
 import com.google.inject.Inject;
+import com.netflix.config.ConfigurationManager;
 import com.santex.clients.FootballApiClient;
 import com.santex.models.entities.Team;
 import com.santex.models.http.CompAndTeamsResp;
@@ -19,7 +20,7 @@ import static com.santex.configs.Constants.Headers.X_AUTH_TOKEN;
 public class FootballApiClientImp implements FootballApiClient {
 
     public static final String CLIENT_NAME = "football-api";
-    private static final String BASE_URL = "http://api.football-data.org/v2";
+    private static final String BASE_URL = ConfigurationManager.getConfigInstance().getString("restClient." + CLIENT_NAME + ".baseUrl");
 
     private final String token;
     private final UnirestInstance instance;
@@ -50,37 +51,6 @@ public class FootballApiClientImp implements FootballApiClient {
                 .method(HttpMethod.GET)
                 .responseMapperClass(CompAndTeamsResp.class)
                 .build().executeRequest();
-
-
-//        HttpResponse<String> response;
-//        try {
-//            String url = BASE_URL + "/competitions/{code}/teams";
-//            response = instance.get(url)
-//                    .header("accept", "application/json")
-//                    .header(X_AUTH_TOKEN, token)
-//                    .routeParam("code", competitionCode)
-//                    .asString();
-//
-//        } catch (Exception e) {
-//            logger.error("[message: Unexpected error executing request] [request: GET /competitions/{}/teams] [error: {}]", competitionCode, ExceptionUtils.getLogMessage(e));
-//            throw new ServerErrorException(e);
-//        }
-//
-//        if (response.getStatus() != 200) {
-//            logger.error("[message: Invalid status response] [request: GET /competitions/{}/teams] [status: {}] [error: {}]", competitionCode, response.getStatus(), response.getBody());
-//            ErrorResponse errorResponse = MapperUtils.toObject(response.getBody(), ErrorResponse.class);
-//            throw response.getStatus() == 404 ? new NotFoundException() : new ApiException(errorResponse.getMessage(), response.getStatus());
-//        }
-//
-//        CompAndTeamsResp compAndTeamsResp;
-//        try {
-//            compAndTeamsResp = MapperUtils.toObject(response.getBody(), CompAndTeamsResp.class);
-//        } catch (Exception e) {
-//            logger.error("[message: Error trying to unmarshal response for get competition and teams request, code: {}] [error: {}] [body: {}]", competitionCode, ExceptionUtils.getLogMessage(e), response.getBody());
-//            throw new ApiException("Invalid api response", HttpStatus.SC_INTERNAL_SERVER_ERROR, e);
-//        }
-//
-//        return compAndTeamsResp;
     }
 
     @Override
@@ -103,41 +73,5 @@ public class FootballApiClientImp implements FootballApiClient {
                 .method(HttpMethod.GET)
                 .responseMapperClass(Team.class)
                 .build().executeRequest();
-
-//        HttpResponse<String> response;
-//        try {
-//            String url = BASE_URL + "/teams/{id}";
-//            response = instance.get(url)
-//                    .header("accept", "application/json")
-//                    .header(X_AUTH_TOKEN, token)
-//                    .routeParam("id", teamId.toString())
-//                    .asString();
-//
-//        } catch (Exception e) {
-//            logger.error("[message: Unexpected error executing request] [request: GET /teams/{id}] [error: {}]", teamId, ExceptionUtils.getLogMessage(e));
-//            throw new ServerErrorException(e);
-//        }
-//
-//        if (response.getParsingError().isPresent()) {
-//            UnirestParsingException e = response.getParsingError().get();
-//            logger.error("[message: Error trying to unmarshal response] [error: {}] [body: {}]", e.getMessage(), e.getOriginalBody());
-//            throw new ApiException("Unmarshal error", HttpStatus.SC_INTERNAL_SERVER_ERROR, e);
-//        }
-//
-//        if (response.getStatus() != 200) {
-//            logger.error("[message: Invalid status response] [request: GET /teams/{}] [status: {}] [error: {}]", teamId, response.getStatus(), response.getBody());
-//            ErrorResponse errorResponse = MapperUtils.toObject(response.getBody(), ErrorResponse.class);
-//            throw response.getStatus() == 404 ? new NotFoundException() : new ApiException(errorResponse.getMessage(), response.getStatus());
-//        }
-//
-//        Team team;
-//        try {
-//            team = MapperUtils.toObject(response.getBody(), Team.class);
-//        } catch (Exception e) {
-//            logger.error("[message: Error trying to unmarshal response for get team request, team: {}] [error: {}] [body: {}]", teamId, ExceptionUtils.getLogMessage(e), response.getBody());
-//            throw new ApiException("Invalid api response", HttpStatus.SC_INTERNAL_SERVER_ERROR, e);
-//        }
-//
-//        return team;
     }
 }

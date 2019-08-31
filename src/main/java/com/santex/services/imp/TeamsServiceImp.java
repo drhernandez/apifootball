@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import javax.persistence.NoResultException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,9 +26,9 @@ import java.util.stream.Collectors;
 @Singleton
 public class TeamsServiceImp implements TeamsService {
 
-    SessionFactory sessionFactory;
-    FootballApiClient footballApiClient;
-    TeamsDao teamsDao;
+    private final SessionFactory sessionFactory;
+    private final FootballApiClient footballApiClient;
+    private final TeamsDao teamsDao;
 
     @Inject
     public TeamsServiceImp(SessionFactory sessionFactory, FootballApiClient footballApiClient, TeamsDao teamsDao) {
@@ -53,10 +52,6 @@ public class TeamsServiceImp implements TeamsService {
         try {
             teams = teamsDao.findByIds(teamIds);
             tx.commit();
-        } catch (NoResultException e) {
-            tx.rollback();
-            logger.error("[message: Teams not found. Ids: ({})]", Arrays.toString(teamIds.toArray()));
-            teams = new ArrayList<>();
         } catch (Exception e) {
             tx.rollback();
             logger.error("[message: Error getting teams ({})] [error: {}]", Arrays.toString(teamIds.toArray()), ExceptionUtils.getLogMessage(e));

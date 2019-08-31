@@ -21,9 +21,9 @@ import java.util.List;
 @Singleton
 public class PlayersServiceImp implements PlayersService {
 
-    SessionFactory sessionFactory;
-    CompetitionsService competitionsService;
-    PlayersDao playersDao;
+    private final SessionFactory sessionFactory;
+    private final CompetitionsService competitionsService;
+    private final PlayersDao playersDao;
 
     @Inject
     public PlayersServiceImp(SessionFactory sessionFactory, CompetitionsService competitionsService, PlayersDao playersDao) {
@@ -34,6 +34,8 @@ public class PlayersServiceImp implements PlayersService {
 
     @Override
     public List<Player> findByIds(List<Long> ids) {
+
+        if (ids == null) throw new IllegalArgumentException();
 
         List<Player> players;
         if (ids.isEmpty()) {

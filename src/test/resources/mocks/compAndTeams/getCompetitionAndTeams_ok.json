@@ -1,0 +1,119 @@
+{
+  "count": 20,
+  "filters": {},
+  "competition": {
+    "id": 2021,
+    "area": {
+      "id": 2072,
+      "name": "England"
+    },
+    "name": "Premier League",
+    "code": "PL",
+    "plan": "TIER_ONE",
+    "lastUpdated": "2019-08-31T14:46:43Z"
+  },
+  "season": {
+    "id": 468,
+    "startDate": "2019-08-09",
+    "endDate": "2020-05-17",
+    "currentMatchday": 4,
+    "winner": null
+  },
+  "teams": [
+    {
+      "id": 57,
+      "area": {
+        "id": 2072,
+        "name": "England"
+      },
+      "name": "Arsenal FC",
+      "shortName": "Arsenal",
+      "tla": "ARS",
+      "crestUrl": "http://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg",
+      "address": "75 Drayton Park London N5 1BU",
+      "phone": "+44 (020) 76195003",
+      "website": "http://www.arsenal.com",
+      "email": "info@arsenal.co.uk",
+      "founded": 1886,
+      "clubColors": "Red / White",
+      "venue": "Emirates Stadium",
+      "lastUpdated": "2019-08-29T02:42:28Z"
+    },
+    {
+      "id": 58,
+      "area": {
+        "id": 2072,
+        "name": "England"
+      },
+      "name": "Aston Villa FC",
+      "shortName": "Aston Villa",
+      "tla": "AST",
+      "crestUrl": "http://upload.wikimedia.org/wikipedia/de/9/9f/Aston_Villa_logo.svg",
+      "address": "Villa Park Birmingham B6 6HE",
+      "phone": "+44 (0121) 3272299",
+      "website": "http://www.avfc.co.uk",
+      "email": null,
+      "founded": 1872,
+      "clubColors": "Claret / Sky Blue",
+      "venue": "Villa Park",
+      "lastUpdated": "2019-08-29T02:40:23Z"
+    },
+    {
+      "id": 61,
+      "area": {
+        "id": 2072,
+        "name": "England"
+      },
+      "name": "Chelsea FC",
+      "shortName": "Chelsea",
+      "tla": "CHE",
+      "crestUrl": "http://upload.wikimedia.org/wikipedia/de/5/5c/Chelsea_crest.svg",
+      "address": "Fulham Road London SW6 1HS",
+      "phone": "+44 (0871) 9841955",
+      "website": "http://www.chelseafc.com",
+      "email": null,
+      "founded": 1905,
+      "clubColors": "Royal Blue / White",
+      "venue": "Stamford Bridge",
+      "lastUpdated": "2019-08-29T02:32:26Z"
+    },
+    {
+      "id": 62,
+      "area": {
+        "id": 2072,
+        "name": "England"
+      },
+      "name": "Everton FC",
+      "shortName": "Everton",
+      "tla": "EVE",
+      "crestUrl": "http://upload.wikimedia.org/wikipedia/de/f/f9/Everton_FC.svg",
+      "address": "Goodison Park Liverpool L4 4EL",
+      "phone": "+44 (0871) 6631878",
+      "website": "http://www.evertonfc.com",
+      "email": "everton@evertonfc.com",
+      "founded": 1878,
+      "clubColors": "Blue / White",
+      "venue": "Goodison Park",
+      "lastUpdated": "2019-08-29T02:40:28Z"
+    },
+    {
+      "id": 64,
+      "area": {
+        "id": 2072,
+        "name": "England"
+      },
+      "name": "Liverpool FC",
+      "shortName": "Liverpool",
+      "tla": "LIV",
+      "crestUrl": "http://upload.wikimedia.org/wikipedia/de/0/0a/FC_Liverpool.svg",
+      "address": "Anfield Road Liverpool L4 OTH",
+      "phone": "+44 (0844) 4993000",
+      "website": "http://www.liverpoolfc.tv",
+      "email": "customercontact@liverpoolfc.tv",
+      "founded": 1892,
+      "clubColors": "Red / White",
+      "venue": "Anfield",
+      "lastUpdated": "2019-08-29T02:32:28Z"
+    }
+  ]
+}

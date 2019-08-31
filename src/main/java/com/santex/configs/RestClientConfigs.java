@@ -2,6 +2,7 @@ package com.santex.configs;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import com.google.inject.Singleton;
 import com.netflix.config.ConfigurationManager;
 import com.santex.clients.imp.FootballApiClientImp;
 import kong.unirest.Unirest;
@@ -24,6 +25,7 @@ public class RestClientConfigs extends AbstractModule {
     private static final ConcurrentHashMap<String, UnirestInstance> restClients = new ConcurrentHashMap<>();
 
     @Provides
+    @Singleton
     @Named(FootballApiClientImp.CLIENT_NAME)
     public UnirestInstance leaguesClient() {
         return buildDefaultRestClient(FootballApiClientImp.CLIENT_NAME);

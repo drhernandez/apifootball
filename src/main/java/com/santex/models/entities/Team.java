@@ -1,10 +1,7 @@
 package com.santex.models.entities;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
@@ -14,6 +11,7 @@ import java.util.Set;
 
 import static org.hibernate.annotations.CascadeType.SAVE_UPDATE;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor

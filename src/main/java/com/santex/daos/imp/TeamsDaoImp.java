@@ -6,6 +6,7 @@ import com.santex.models.entities.Team;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TeamsDaoImp
@@ -23,6 +24,7 @@ public class TeamsDaoImp
         String hql = "from Team WHERE id IN (:ids)";
         Query query = getSession().createQuery(hql);
         query.setParameter("ids", ids);
-        return query.list();
+        List<Team> teams = query.list();
+        return teams != null ? teams : new ArrayList<>();
     }
 }
