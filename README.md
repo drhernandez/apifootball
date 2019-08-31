@@ -2,13 +2,13 @@
 
 This application allows you to import football content from www.football-data.org
 
-#Thecnology
+# Thecnology
 
 * Java 8
 * Gradle
 * MySQL 5.1
 
-##Configuration
+## Configuration
 
 **Install plugin for IntelliJ**
 * Preferences -> Plugins
