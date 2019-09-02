@@ -29,7 +29,7 @@ This application allows you to import football content from www.football-data.or
 
 **Add environment variables**
 
-* ENVIRONMENT: environment
+* ENVIRONMENT: environment (dev|prod)
 * DB_SANTEX_ENDPOINT: your database host endpoint
 * DB_SANTEX_PASSWORD: your database user password
 * FO_TOKEN: your token generated on www.football-data.org
@@ -55,3 +55,12 @@ Hibernate will automatically create all tables. In case you want to do it your s
 ## Test
 
 * execute ./gradlew test
+
+## Endpoints
+
+**/import-league/{leagueCode}**
+* Allows you to import the data of the specified league. Due to footbal-data api rate limitis, with a free api_key is not posible to import the complete list of teams in only one request. If this is the case, the enpoint will return a response with status code 206 (partial content) and with a body {"message": "Partially imported"}. 
+You can execute the call again until all the teams have been correctly imported, in which case, the api will return a response with status 200 and body {"message": "Successfully imported"}
+
+**total-players/{leagueCode}**
+* Returns the number of players that belong to a league
