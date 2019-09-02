@@ -1,4 +1,4 @@
-create DATABASE IF NOT EXISTS santex;
+create SCHEMA IF NOT EXISTS santex;
 
 create table IF NOT EXISTS santex.COMPETITIONS
 (
