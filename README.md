@@ -2,7 +2,7 @@
 
 This application allows you to import football content from www.football-data.org
 
-# Thecnology
+# Tecnology
 
 * Java 8
 * Gradle
